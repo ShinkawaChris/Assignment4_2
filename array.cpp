@@ -1,6 +1,5 @@
-
 #include "stdafx.h"
-#include"Node.h"
+#include "Node.h"
 #include<iostream>
 #include<queue>
 #include<unordered_map>
@@ -28,35 +27,34 @@ int merge(int *arrs[],int arrs_length[], int *re_arr, int & re_size) {
 	int k = 5;
 		//sizeof(arrs)/ sizeof (int*);
 
-// build a priority queue and insert nodes form k arrays (start with first elements of each array)
+
 	priority_queue < Node*, vector <Node*>, compareNode > pq1;
 
-	// create nodes from the first elements of each array consisting of Node (element_val,  array_num)
+
 	for (int i = 0; i < k; i++) {
 		Node* heapNode = new Node(*(arrs[i]),i );
 		pq1.push(heapNode);
 		arrs_length[i]--;
 		arrs[i]++;
 		}
-	//fill re_arr with objects from the heap
 
 	int j =0;
 	while (!pq1.empty()) {
-		Node * heapNode = pq1.top();
-		re_arr[j] = heapNode->element_val;
+		Node * outputNode = pq1.top();
+		re_arr[j] = outputNode->element_val;
 		j++;
 		pq1.pop();
 
-		int arrayNumber = heapNode->array_num;
-		// delete the node if array is empty. then we don't need the node anymore. checked with an extra variable
+		int arrayNumber = outputNode->array_num;
+
 		if (NULL == arrs_length[arrayNumber]) {
-			delete heapNode;
+			delete outputNode;
 			continue;
 		}
-// refill the node[k] with the next element in the array
 
-		heapNode->element_val = *(arrs[(*heapNode).array_num]);
-		pq1.push(heapNode);
+
+		outputNode->element_val = *(arrs[(*outputNode).array_num]);
+		pq1.push(outputNode);
 		arrs_length[arrayNumber]--;
 		arrs[arrayNumber]++;
 	}
@@ -73,21 +71,17 @@ int merge(int *arrs[],int arrs_length[], int *re_arr, int & re_size) {
 */
 
 
+
 int intersect(int *arrs[], int arrs_length[], int *re_arr, int & re_size) {
 
-// build a hash map containing all elements of the first array
-
-	unordered_map<int,int> Map0;
+	unordered_map<int, int> Map0;
 	unordered_map<int, int> Map1;
 	unordered_map<int, int> Map2;
 	unordered_map<int, int> Map3;
 
-	unordered_map<int,int>::iterator iter;
-
 	for (int i = 0; i < arrs_length[0]; i++) {
 		Map0[arrs[0][i]];
 	}
-
 	for (int i = 0; i < arrs_length[1]; i++) {
 		Map1[arrs[1][i]];
 	}
@@ -98,25 +92,16 @@ int intersect(int *arrs[], int arrs_length[], int *re_arr, int & re_size) {
 		Map3[arrs[3][i]];
 	}
 
-
-// check all elements of the second array if they are contained in the hash map.
 	int j = 0;
 	for (int i = 0; i < arrs_length[4]; i++) {
 		if (Map0.count(arrs[4][i]) > 0  && Map1.count(arrs[4][i]) > 0 && Map2.count(arrs[4][i]) > 0 && Map3.count(arrs[4][i]) > 0)
 		{
-
 			re_arr[j] = arrs[4][i];
+			Map0.erase(arrs[4][i]);
 			j++;
-			
 		}
 		re_size = j;
 	}
-// iterator
-//	for (iter = Map1.begin(); iter != Map1.end(); iter++) {
-		
-//	}
-		
-
 	return 0;
 }
 
@@ -125,9 +110,9 @@ int main() {
 	int * arrs[5];
 	int arrs_length[5];
 	int arr0[] = { 1, 5, 8 };
-	int arr1[] = { 1, 2, 3, 5, 7, 10, 11, 15 };
-	int arr2[] = { 1, 4, 5, 6 };
-	int arr3[] = { 2, 5, 9, 14, 16, 19 };
+	int arr1[] = { 1, 2, 3, 5, 7, 9, 10, 11, 15 };
+	int arr2[] = { 1, 4, 5, 6 ,9};
+	int arr3[] = { 1, 5, 9, 14, 16, 19 };
 	int arr4[] = { 1, 2, 4, 5, 6, 9, 9 };
 	arrs[0] = arr0;
 	arrs_length[0] = sizeof(arr0) / sizeof(int);
@@ -179,7 +164,7 @@ int main() {
 		cout << merged[sum_length - 1] << "]" << endl;
 	}
 
-	system("PAUSE");
+
 	return 0;
 	
 }
