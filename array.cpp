@@ -25,7 +25,7 @@ struct compareNode : public binary_function <Node*, Node*, bool>
 
 int merge(int *arrs[],int arrs_length[], int *re_arr, int & re_size) {
 	int k = 5;
-		//sizeof(arrs)/ sizeof (int*);
+	//	sizeof(arrs_length)/ sizeof (int);
 
 
 	priority_queue < Node*, vector <Node*>, compareNode > pq1;
@@ -100,7 +100,11 @@ int intersect(int *arrs[], int arrs_length[], int *re_arr, int & re_size) {
 			Map0.erase(arrs[4][i]);
 			j++;
 		}
-		re_size = j;
+		if (j == 0) {
+			re_size = 1;
+			re_arr[j] = 0;
+		}
+		else {re_size = j;}
 	}
 	return 0;
 }
@@ -163,7 +167,6 @@ int main() {
 		}
 		cout << merged[sum_length - 1] << "]" << endl;
 	}
-
 
 	return 0;
 	
